@@ -8,5 +8,6 @@
         public string LastName { get; set; }
         public string Email { get; set; }
         public List<Pattern> Patterns { get; set; }
+        public bool isSeller { get; set; }
     }
 }
