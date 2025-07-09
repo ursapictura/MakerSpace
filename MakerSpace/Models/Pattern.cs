@@ -14,5 +14,6 @@
         public string Photo2 { get; set; }
         public string Photo3 { get; set;}
         public string Pdf { get; set; }
+        public bool IsApproved { get; set; }
     }
 }
