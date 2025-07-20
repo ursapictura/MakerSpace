@@ -4,7 +4,7 @@ namespace MakerSpace.Data
 {
     public class TagData
     {
-        new static List<Tag> Tags = new()
+        public static List<Tag> Tags = new()
         {
             new() {Id = 1, Name = "Clothing"},
             new() {Id = 2, Name = "Toys"},
