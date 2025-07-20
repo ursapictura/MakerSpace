@@ -4,9 +4,10 @@
     {
         public int Id {  get; set; }
         public string Name { get; set; }
-        public string MakerId { get; set; }
+        public int MakerId { get; set; }
         public User Maker { get; set; }
-        public string Catergory { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
         public string Description { get; set; }
         public DateOnly Published { get; set; }
         public decimal Price { get; set; }
