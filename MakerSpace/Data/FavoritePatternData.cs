@@ -4,8 +4,8 @@ namespace MakerSpace.Data
 {
     public class FavoritePatternData
     {
-        public static List<FavoritePattern> FavoritePatterns =
-[
+        public static List<FavoritePattern> FavoritePatterns = new()
+        {
            new() { FavoritesId = 1,
                PatternId = 1 },
 
@@ -20,6 +20,6 @@ namespace MakerSpace.Data
 
            new() { FavoritesId = 5,
                PatternId = 5 },
-];
+        };
     }
 }

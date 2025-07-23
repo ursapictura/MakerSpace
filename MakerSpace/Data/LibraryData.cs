@@ -4,9 +4,9 @@ namespace MakerSpace.Data
 {
     public class LibraryData
     {
-        public static List<Library> Libraries =
-[
-   new() { Id = 1,
+        public static List<Library> Libraries = new()
+        {
+           new () { Id = 1,
            UserId = 1 },
 
            new() { Id = 2,
@@ -20,6 +20,6 @@ namespace MakerSpace.Data
 
            new() { Id = 5,
            UserId = 5 },
-];
+        };
     }
 }
