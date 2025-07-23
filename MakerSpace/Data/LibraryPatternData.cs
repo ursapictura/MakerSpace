@@ -4,8 +4,8 @@ namespace MakerSpace.Data
 {
     public class LibraryPatternData
     {
-        public static List<LibraryPattern> LibraryPatterns =
-[
+        public static List<LibraryPattern> LibraryPatterns = new()
+        {
            new() { LibraryId = 1,
                PatternId = 1 },
 
@@ -20,6 +20,6 @@ namespace MakerSpace.Data
 
            new() { LibraryId = 5,
                PatternId = 5 },
-];
+        };
     }
 }
