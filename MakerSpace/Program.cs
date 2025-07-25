@@ -1,3 +1,7 @@
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Json;
+using MakerSpace;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,7 +18,31 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+// allows passing datetimes without time zone data 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+// allows our api endpoints to access the database through Entity Framework Core
+builder.Services.AddNpgsql<MakerSpaceDbContext>(builder.Configuration["MakerSpaceDbConnectionString"]);
+
+// Set the JSON serializer options
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 
 app.Run();
