@@ -17,5 +17,10 @@
         public string Pdf { get; set; }
         public bool IsApproved { get; set; }
         public bool IsDeleted { get; set; }
+
+        public List<FavoritePattern> FavoritePatterns { get; set; }
+        public List<LibraryPattern> LibraryPatterns { get; set; }
+        public List<PatternTag> PatternTags { get; set; }
+        public User? User { get; set; }
     }
 }

@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public List<Pattern> Patterns { get; set; }
+        public List<LibraryPattern> LibraryPatterns { get; set; }
+        public User? User { get; set; }
     }
 }

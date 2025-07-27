@@ -9,5 +9,8 @@
         public string Email { get; set; }
         public List<Pattern> Patterns { get; set; }
         public bool IsSeller { get; set; }
+        public Storefront Storefront { get; set; }
+        public Library Library { get; set; }
+        public Favorites Favorites { get; set; }
     }
 }
