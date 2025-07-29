@@ -27,6 +27,7 @@ namespace MakerSpace
             modelBuilder.Entity<Library>().HasData(LibraryData.Libraries);
             modelBuilder.Entity<Storefront>().HasData(StorefrontData.Storefronts);
             modelBuilder.Entity<Tag>().HasData(TagData.Tags);
+            modelBuilder.Entity<Favorites>().HasData(FavoritesData.Favorites);
             modelBuilder.Entity<FavoritePattern>().HasData(FavoritePatternData.FavoritePatterns);
             modelBuilder.Entity<LibraryPattern>().HasData(LibraryPatternData.LibraryPatterns);
             modelBuilder.Entity<PatternTag>().HasData(PatternTagData.PatternTags);
@@ -55,11 +56,26 @@ namespace MakerSpace
                .HasForeignKey(lp => lp.LibraryId)
                .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<LibraryPattern>()
+                .HasKey(lp => new { lp.LibraryId, lp.PatternId });
+
             modelBuilder.Entity<FavoritePattern>()
                 .HasOne(fp => fp.Favorites)
                 .WithMany(f => f.FavoritePatterns)
                 .HasForeignKey(fp => fp.FavoritesId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FavoritePattern>()
+                .HasKey(fp => new { fp.FavoritesId, fp.PatternId });
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Patterns)
+                .WithOne(p => p.Maker)
+                .HasForeignKey(p => p.MakerId); 
+
+            modelBuilder.Entity<PatternTag>()
+                .HasKey(pt => new { pt.PatternId, pt.TagId });
+
 
         }
     }
