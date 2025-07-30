@@ -3,11 +3,14 @@
     public class User
     {
         public int Id { get; set; }
-        public string UserName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public string UserName { get; set; } = default!;
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string Email { get; set; } = default!;
         public List<Pattern> Patterns { get; set; }
         public bool IsSeller { get; set; }
+        public Storefront Storefront { get; set; }
+        public Library Library { get; set; }
+        public Favorites Favorites { get; set; }
     }
 }
