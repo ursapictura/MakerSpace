@@ -75,6 +75,33 @@ namespace MakerSpace.API
             .RequireAuthorization()
             .WithName("AddPatternToLibrary")
             .WithOpenApi();
+
+            // READ: GET /api/library/{libraryId}/patterns
+            app.MapGet("/api/library/{libraryId}/patterns", async (MakerSpaceDbContext db, int libraryId, HttpContext httpContext) =>
+            {
+                // Get the authenticated user's ID
+                var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out var userId))
+                {
+                    return Results.Unauthorized();
+                }
+
+                // Check if the library exists and belongs to the user
+                var library = await db.Libraries
+                    .Include(l => l.LibraryPatterns)
+                    .ThenInclude(lp => lp.Pattern)
+                    .FirstOrDefaultAsync(l => l.Id == libraryId && l.UserId == userId);
+                if (library == null)
+                {
+                    return Results.NotFound($"Library with ID {libraryId} not found or not owned by user.");
+                }
+
+                // Return the library patterns
+                return Results.Ok(library.LibraryPatterns);
+            })
+            .RequireAuthorization()
+            .WithName("GetLibraryPatterns")
+            .WithOpenApi();
         }
     }
 }
