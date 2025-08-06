@@ -3,14 +3,16 @@ using MakerSpace.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace MakerSpace.API
+namespace MakerSpace.Endpoints
 {
-    public class FavoritesAPI
+    public static class FavoritesEndpoints
     {
-        public static async void Map(WebApplication app)
+        public static void MapFavoritesEndpoints(this IEndpointRouteBuilder routes)
         {
+            var group = routes.MapGroup("/api/favorites").WithTags(nameof(Favorites));
+
             // CREATE: POST /api/favorites/{favoritesId}/patterns
-            app.MapPost("/api/favorites/{favoritesId}/patterns", async (MakerSpaceDbContext db, int favoritesId, CreatePatternDTO request, HttpContext httpContext) =>
+            group.MapPost("/api/favorites/{favoritesId}/patterns", async (MakerSpaceDbContext db, int favoritesId, CreatePatternDTO request, HttpContext httpContext) =>
             {
                 // Validate input
                 if (request.PatternId <= 0)
@@ -78,7 +80,7 @@ namespace MakerSpace.API
             .WithOpenApi();
 
             // READ: GET /api/favorites/{favoritesId}/patterns
-            app.MapGet("/api/favorites/{favoritesId}/patterns", async (MakerSpaceDbContext db, int favoritesId, HttpContext httpContext) =>
+            group.MapGet("/api/favorites/{favoritesId}/patterns", async (MakerSpaceDbContext db, int favoritesId, HttpContext httpContext) =>
             {
                 // Get the authenticated user's ID
                 var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -105,7 +107,7 @@ namespace MakerSpace.API
             .WithOpenApi();
 
             // DELETE: DELETE /api/favorites/{favoritesId}/patterns/{patternId}
-            app.MapDelete("/api/favorites/{favoritesId}/patterns/{patternId}", async (MakerSpaceDbContext db, int favoritesId, int patternId, HttpContext httpContext) =>
+            group.MapDelete("/api/favorites/{favoritesId}/patterns/{patternId}", async (MakerSpaceDbContext db, int favoritesId, int patternId, HttpContext httpContext) =>
             {
                 // Get the authenticated user's ID
                 var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

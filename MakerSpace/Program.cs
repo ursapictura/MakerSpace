@@ -1,4 +1,5 @@
 using MakerSpace;
+using MakerSpace.Endpoints;
 using MakerSpace.Models;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
@@ -46,5 +47,8 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
+app.MapFavoritesEndpoints();
+app.MapLibraryEndpoints();
+app.MapLibraryPatternEndpoints();
 
 app.Run();

@@ -3,13 +3,15 @@ using MakerSpace.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace MakerSpace.API
+namespace MakerSpace.Endpoints
 {
-    public class LibraryPatternAPI
+    public static class LibraryPatternEndpoints
     {
-        public static async void Map(WebApplication app)
+        public static void MapLibraryPatternEndpoints(this IEndpointRouteBuilder routes)
         {
-            app.MapPost("/api/library/{libraryId}/patterns", async (MakerSpaceDbContext db, int libraryId, CreatePatternDTO request, HttpContext httpContext) =>
+            var group = routes.MapGroup("/api/libraryPatterns").WithTags(nameof(LibraryPattern));
+
+            group.MapPost("/api/library/{libraryId}/patterns", async (MakerSpaceDbContext db, int libraryId, CreatePatternDTO request, HttpContext httpContext) =>
             {
                 // Validate input
                 if (request.PatternId <= 0)
@@ -77,7 +79,7 @@ namespace MakerSpace.API
             .WithOpenApi();
 
             // READ: GET /api/library/{libraryId}/patterns
-            app.MapGet("/api/library/{libraryId}/patterns", async (MakerSpaceDbContext db, int libraryId, HttpContext httpContext) =>
+            group.MapGet("/api/library/{libraryId}/patterns", async (MakerSpaceDbContext db, int libraryId, HttpContext httpContext) =>
             {
                 // Get the authenticated user's ID
                 var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

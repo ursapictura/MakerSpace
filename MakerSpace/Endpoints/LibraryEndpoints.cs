@@ -3,14 +3,16 @@ using MakerSpace.DTO;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 
-namespace MakerSpace.API
+namespace MakerSpace.Endpoints
 {
     // LibraryAPI.cs
-    public class LibraryAPI
+    public static class LibraryEndpoints
     {
-        public static async void Map(WebApplication app)
+        public static void MapLibraryEndpoints(this IEndpointRouteBuilder routes)
         {
-            app.MapPost("/api/library", async (MakerSpaceDbContext db, CreateLibraryDTO request, HttpContext httpContext) =>
+            var group = routes.MapGroup("/api/libraries").WithTags(nameof(Library));
+
+            group.MapPost("/", async (MakerSpaceDbContext db, CreateLibraryDTO request, HttpContext httpContext) =>
             {
                 // Validate input
                 if (request.PatternId <= 0)
@@ -78,7 +80,7 @@ namespace MakerSpace.API
             .WithOpenApi();
 
             // READ: GET /api/library/{id}
-            app.MapGet("/api/library/{id}", async (MakerSpaceDbContext db, int id, HttpContext httpContext) =>
+            group.MapGet("/{id}", async (MakerSpaceDbContext db, int id, HttpContext httpContext) =>
             {
                 // Get the authenticated user's ID
                 var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -106,7 +108,7 @@ namespace MakerSpace.API
             .WithOpenApi();
 
             // UPDATE: PUT /api/library/{id}
-            app.MapPut("/api/library/{id}", async (MakerSpaceDbContext db, int id, UpdateLibraryDTO request, HttpContext httpContext) =>
+            group.MapPut("/{id}", async (MakerSpaceDbContext db, int id, UpdateLibraryDTO request, HttpContext httpContext) =>
             {
                 // Validate input
                 if (request.PatternIds == null || !request.PatternIds.Any())
