@@ -5,7 +5,7 @@ namespace MakerSpace.Endpoints
 {
     public static class TagEndpoints
     {
-        public static void MapCategoryEndpoints(this IEndpointRouteBuilder routes)
+        public static void MapTagEndpoints(this IEndpointRouteBuilder routes)
         {
             var group = routes.MapGroup("/api/tag").WithTags(nameof(Tag));
 
