@@ -19,16 +19,16 @@ namespace MakerSpace.Endpoints
                 {
                     return Results.NotFound($"PatternId '{newPatternTag.PatternId}' does not exist.");
                 }
-                else if (!db.Tags.Any(t => t.Id  == newPatternTag.TagId))
+                else if (!db.Tags.Any(t => t.Id == newPatternTag.TagId))
                 {
                     return Results.NotFound($"TagId '{newPatternTag.TagId}' does not exist.");
                 }
 
-                    PatternTag? addPatternTag = new()
-                    {
-                        PatternId = newPatternTag.PatternId,
-                        TagId = newPatternTag.TagId,
-                    };
+                PatternTag? addPatternTag = new()
+                {
+                    PatternId = newPatternTag.PatternId,
+                    TagId = newPatternTag.TagId,
+                };
 
                 db.PatternTags.Add(addPatternTag);
                 db.SaveChanges();
@@ -47,13 +47,13 @@ namespace MakerSpace.Endpoints
                 }
 
                 PatternTag? patternTagToDelete = await db.PatternTags
-                                                            .SingleOrDefaultAsync(pt =>    
-                                                                pt.PatternId == patternId && 
+                                                            .SingleOrDefaultAsync(pt =>
+                                                                pt.PatternId == patternId &&
                                                                 pt.TagId == tagId);
 
                 if (patternTagToDelete == null)
                 {
-                    return Results.NotFound($"A PatternTag with TagId:{tagId} and PatternId:{patternId} does not exist.")
+                    return Results.NotFound($"A PatternTag with TagId:{tagId} and PatternId:{patternId} does not exist.");
                 }
 
                 db.PatternTags.Remove(patternTagToDelete);
