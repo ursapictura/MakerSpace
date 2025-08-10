@@ -7,7 +7,7 @@ namespace MakerSpace.Endpoints
     {
         public static void MapUserEndpoints(this IEndpointRouteBuilder routes)
         {
-            var group = routes.MapGroup("/users").WithTags(nameof(User));
+            var group = routes.MapGroup("/api/users").WithTags(nameof(User));
 
             // Get user by Id
             group.MapGet("/{userId}", async (MakerSpaceDbContext db, int userId) =>
@@ -64,7 +64,7 @@ namespace MakerSpace.Endpoints
 
                 db.Users.Remove(userToDelete);
                 await db.SaveChangesAsync();
-                return Results.Ok($"User Id {userId} removed from database.");
+                return Results.Ok($"User Id {userId} removed.");
             });
         }
     }

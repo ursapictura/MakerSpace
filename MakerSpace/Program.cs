@@ -49,5 +49,6 @@ app.UseHttpsRedirection();
 
 // Map endpoints
 app.MapUserEndpoints();
+app.MapStorefrontEndpoints();
 
 app.Run();
