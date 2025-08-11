@@ -9,7 +9,7 @@ namespace MakerSpace.Endpoints
         {
             var group = routes.MapGroup("/api/pattern").WithTags(nameof(PatternTag));
 
-            routes.MapPost("/addTag", async (MakerSpaceDbContext db, PatternTag newPatternTag) => {
+            group.MapPost("/addTag", async (MakerSpaceDbContext db, PatternTag newPatternTag) => {
 
                 if (newPatternTag == null)
                 {
@@ -35,7 +35,7 @@ namespace MakerSpace.Endpoints
                 return Results.Created($"patternTag 'addPatterntagId' created", addPatternTag);
             });
 
-            routes.MapDelete("/deleteTag", async (MakerSpaceDbContext db, int patternId, int tagId) =>
+            group.MapDelete("/deleteTag", async (MakerSpaceDbContext db, int patternId, int tagId) =>
             {
                 if (!db.Patterns.Any(p => p.Id == patternId))
                 {

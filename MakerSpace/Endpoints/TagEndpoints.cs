@@ -10,7 +10,7 @@ namespace MakerSpace.Endpoints
             var group = routes.MapGroup("/api/tag").WithTags(nameof(Tag));
 
             // Get all tags
-            routes.MapGet("", async (MakerSpaceDbContext db) =>
+            group.MapGet("/", async (MakerSpaceDbContext db) =>
             {
                 var tags = await db.Tags.ToListAsync();
 
@@ -23,7 +23,7 @@ namespace MakerSpace.Endpoints
             });
 
             // Create a Tag
-            routes.MapPost("", async (MakerSpaceDbContext db, Tag newTag) =>
+            group.MapPost("", async (MakerSpaceDbContext db, Tag newTag) =>
             {
                 Tag addTag = new()
                 {

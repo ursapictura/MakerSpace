@@ -11,7 +11,7 @@ namespace MakerSpace.Endpoints
         {
             var group = routes.MapGroup("/api/pattern").WithTags(nameof(Pattern));
 
-            routes.MapGet("", async (MakerSpaceDbContext db) =>
+            group.MapGet("/", async (MakerSpaceDbContext db) =>
             {
                 var patterns = await db.Patterns
                     .Include(p => p.Maker)
@@ -25,7 +25,7 @@ namespace MakerSpace.Endpoints
             });
 
             // Get all patterns in a specific category
-            routes.MapGet("/category/{categoryName}", async (MakerSpaceDbContext db, string categoryName) =>
+            group.MapGet("/category/{categoryName}", async (MakerSpaceDbContext db, string categoryName) =>
             {
 
                 // Check that Category exists
@@ -59,7 +59,7 @@ namespace MakerSpace.Endpoints
             });
 
             // Get all patterns made by a specific seller
-            routes.MapGet("/seller/{sellerId}", async (MakerSpaceDbContext db, int sellerId) =>
+            group.MapGet("/seller/{sellerId}", async (MakerSpaceDbContext db, int sellerId) =>
             {
 
                 var sellerExists = await db.Users
@@ -79,7 +79,7 @@ namespace MakerSpace.Endpoints
                     .Where(p => p.MakerId == sellerId)
                     .ToListAsync();
 
-                if (patterns == null)
+                if (patterns.Count == 0)
                 {
                     return Results.NotFound("no patterns found for this seller");
                 }
@@ -88,7 +88,7 @@ namespace MakerSpace.Endpoints
             });
 
             //Get all patterns that match a search query
-            routes.MapGet("/search/{searchInput}", async (MakerSpaceDbContext db, string searchInput) =>
+            group.MapGet("/search/{searchInput}", async (MakerSpaceDbContext db, string searchInput) =>
             {
                 var patterns = await db.Patterns
                     .Include(p => p.Maker)
@@ -103,10 +103,17 @@ namespace MakerSpace.Endpoints
                         p.PatternTags.Any(pt => pt.Tag != null && pt.Tag.Name.ToLower().Contains(searchInput.ToLower()))
                     )
                     .ToListAsync();
+
+                if (patterns.Count == 0)
+                {
+                    return Results.NotFound("Search returned no results.");
+                }
+
+                return Results.Ok(patterns);
             });
 
             // Get single pattern
-            routes.MapGet("/{patternId}", async (MakerSpaceDbContext db, int patternId) =>
+            group.MapGet("/{patternId}", async (MakerSpaceDbContext db, int patternId) =>
             {
                 Pattern? pattern = await db.Patterns
                     .Include(p => p.Maker)
@@ -124,7 +131,7 @@ namespace MakerSpace.Endpoints
             });
 
             // Create a new pattern
-            routes.MapPost("", async (MakerSpaceDbContext db, Pattern newPattern) =>
+            group.MapPost("/", async (MakerSpaceDbContext db, Pattern newPattern) =>
             {
                 
                 if (newPattern == null)
@@ -163,7 +170,7 @@ namespace MakerSpace.Endpoints
             });
 
             // Update a specific pattern
-            routes.MapPut("/{patternId}", async (MakerSpaceDbContext db, int patternId, Pattern pattern) =>
+            group.MapPut("/{patternId}", async (MakerSpaceDbContext db, int patternId, Pattern pattern) =>
             {
                 Pattern? patternToUpdate = await db.Patterns.SingleOrDefaultAsync(p => p.Id == patternId);
 
@@ -197,7 +204,7 @@ namespace MakerSpace.Endpoints
             });
 
             // Soft Delete a Pattern, this will make is visible only to users who have purchased it
-            routes.MapPatch("/delete/{patternId}", async (MakerSpaceDbContext db, int patternId) =>
+            group.MapPatch("/delete/{patternId}", async (MakerSpaceDbContext db, int patternId) =>
             {
                 Pattern? patternToSoftDelete = await db.Patterns.SingleOrDefaultAsync(p => p.Id == patternId);
 

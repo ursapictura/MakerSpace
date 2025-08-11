@@ -9,7 +9,7 @@ namespace MakerSpace.Endpoints
         {
             var group = routes.MapGroup("/api/category").WithTags(nameof(Category));
 
-            routes.MapGet("", async (MakerSpaceDbContext db) =>
+            group.MapGet("/", async (MakerSpaceDbContext db) =>
             {
                 var categories = await db.Categories.ToListAsync();
 
